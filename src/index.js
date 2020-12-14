@@ -1,13 +1,25 @@
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const { PORT } = process.env;
+const { auth, errorHandler } = require('./middlewares/index');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/ping', (_req, res) => res.send('pong!'));
+app.get('/ping', auth(true), (_req, res) => res.send('pong!'));
 
-app.listen(PORT || 3000, () => console.log('Listening...'));
+app.use(errorHandler)
+
+app.listen(process.env.PORT, () => console.log('Listening...'));
+/**
+ * login: /api/login
+ * sign up: /api/sign-up
+ * CRUD /api/admin/authors
+ * CRUD /api/admin/articles
+ * List article endpoint
+ * /api/articles?category=:slug
+ * /api/articles/:id
+ */
