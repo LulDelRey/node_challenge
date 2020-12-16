@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const { auth, errorHandler } = require('./middlewares/index');
+const { auth, errorHandler } = require('./middlewares');
 
 const app = express();
 
@@ -14,6 +14,7 @@ app.get('/ping', auth(true), (_req, res) => res.send('pong!'));
 app.use(errorHandler)
 
 app.listen(process.env.PORT, () => console.log('Listening...'));
+
 /**
  * login: /api/login
  * sign up: /api/sign-up
