@@ -1,3 +1,5 @@
+const { Model } = require('objection');
+
 authors = [
   {
     name: 'Luis',
@@ -22,4 +24,20 @@ authors = [
   },
 ];
 
-module.exports = authors;
+class AuthorsModel extends Model {
+  static get tableName() {
+    return 'authors';
+  }
+
+  static get jsonSchema() {
+    return {
+      type: 'object',
+      required: 'name',
+      properties: {
+
+      },
+    };
+  }
+};
+
+module.exports = AuthorsModel;

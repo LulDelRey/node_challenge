@@ -1,18 +1,17 @@
-require('dotenv').config();
+require('dotenv/config');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const { errorHandler } = require('./middlewares');
+const apiRoute = require('./controller/apiController');
 const { PORT } = process.env;
-const { auth, errorHandler } = require('./middlewares');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/ping', auth(false), (_req, res) =>
-  res.status(200).json({ res: 'pong!' })
-);
+app.use('/api', apiRoute)
 
 app.use(errorHandler);
 

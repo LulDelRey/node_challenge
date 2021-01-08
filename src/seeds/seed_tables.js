@@ -1,7 +1,8 @@
 // ecnrypt the password and save the hash, next step
 exports.seed = function (knex) {
-  return knex('authors')
+  return knex('articles')
     .del()
+    .then(() => knex('authors').del())
     .then(() =>
       knex('authors').insert([
         {

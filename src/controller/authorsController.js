@@ -1,10 +1,9 @@
 const { Router } = require('express');
-const auth = require('../middlewares');
+const { sign } = require('jsonwebtoken');
+const { auth } = require('../middlewares');
 
-const authorsRoute = Router();
+const authorsRoute = Router({mergeParams: true});
 
-const login = (req, res) => {};
+authorsRoute.route('/s').post(auth(false));
 
-const signUp = (req, res) => {};
-
-authorsRoute.route('/');
+module.exports = authorsRoute;
