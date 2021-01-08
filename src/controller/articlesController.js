@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { auth } = require("../middlewares");
+
 const articlesRoute = Router({ mergeParams: true });
 
 const createArticle = (req, res) => {
