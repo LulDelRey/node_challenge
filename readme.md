@@ -126,11 +126,11 @@ npm run testCoverage
 
 ## Api endpoints:
   - #### Login:
-    Endpoint expects email and password on the request body
+    - Endpoint expects email and password on the request body
 
-    Will return status, message and token
+    - Will return status, message and token
 
-    POST url + /api/login
+    `POST url + /api/login`
 
   - #### Sign Up:
     Endpoint expects name, email, password and picture on the request body
