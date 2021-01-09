@@ -130,14 +130,14 @@ npm run testCoverage
 
     - Will return status, message and token
 
-    `POST url + /api/login`
+      `POST url + /api/login`
 
   - #### Sign Up:
     - Endpoint expects name, email, password and picture on the request body
 
     - Will return status, message and the object with the information passed
 
-    `POST url + /api/sign-up`
+      `POST url + /api/sign-up`
 
   - #### Create authors:
     - Need to be authenticate with an admin user
