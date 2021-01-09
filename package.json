@@ -4,11 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "debug": "nodemon src/index.js"
+    "start": "node src/index.js",
+    "test": "jest --runInBand",
+    "testCoverage": "jest --runInBand --coverage",
+    "debug": "nodemon src/index.js",
+    "lint": "eslint"
   },
   "jest": {
-    "verbose": true
+    "verbose": true,
+    "collectCoverageFrom": [
+      "!**/node_modules/**",
+      "!**/src/seeds**",
+      "!**/src/migrations**",
+      "!**/src/knex.js",
+      "!**/src/knexfile.js",
+      "**/src/controller/**",
+      "**/src/middlewares/**",
+      "**/src/model/**",
+      "**/src/service/**"
+    ]
   },
   "author": "",
   "license": "ISC",
