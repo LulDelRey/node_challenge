@@ -5,7 +5,7 @@ const loginRoute = Router({ mergeParams: true });
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  return res.status(200).json({ email, password });
+  return res.status(200).json({ email, password })
 };
 
 loginRoute.route('/').post(auth(false), login);

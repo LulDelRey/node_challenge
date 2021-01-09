@@ -10,21 +10,21 @@ exports.seed = function (knex) {
           email: 'luis@gmail.com',
           password: 'luis123',
           picture: 'alguma',
-          role: 'ADM',
+          role: 'ADMIN',
         },
         {
           name: 'Eduardo',
           email: 'eduedu@gmail.com',
           password: 'edu123',
           picture: 'algumatbm',
-          role: 'AUT',
+          role: 'CLIENT',
         },
         {
           name: 'Mari',
           email: 'mari@gmail.com',
           password: 'mari123',
           picture: 'outra',
-          role: 'aut',
+          role: 'CLIENT',
         },
       ])
     )

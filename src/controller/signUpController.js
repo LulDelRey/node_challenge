@@ -5,7 +5,7 @@ const signUpRoute = Router({ mergeParams: true });
 
 const signUp = (req, res) => {
   const { name, email, password, picture } = req.body;
-  // const { status, message } = signUpFunc(name, email, password, picture);
+  // const { status, message } = signUpFunc(name, email, password, picture, 'AUT');
   return res.status(200).json({ name, email, password, picture });
 };
 
