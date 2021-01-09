@@ -1,15 +1,23 @@
 require('dotenv/config');
 
-const { OUSER, PASSWORD, DB_NAME } = process.env;
+const {
+  OUSER,
+  PASSWORD,
+  HOST,
+  DB_NAME_DEV,
+  DB_NAME_PROD,
+  DB_NAME_TEST,
+  DB_DIALECT,
+} = process.env;
 
 module.exports = {
   test: {
-    client: 'mysql',
+    client: DB_DIALECT,
     connection: {
-      host: 'localhost',
+      host: HOST,
       user: OUSER,
       password: PASSWORD,
-      database: 'objectionTesting',
+      database: DB_NAME_TEST,
     },
     migrations: {
       directory: `${__dirname}/migrations`,
@@ -19,12 +27,12 @@ module.exports = {
     },
   },
   development: {
-    client: 'mysql',
+    client: DB_DIALECT,
     connection: {
-      host: 'localhost',
+      host: HOST,
       user: OUSER,
       password: PASSWORD,
-      database: DB_NAME,
+      database: DB_NAME_DEV,
     },
     debug: true,
     migrations: {
@@ -34,4 +42,20 @@ module.exports = {
       directory: `${__dirname}/seeds`,
     },
   },
+  production: {
+    client: DB_DIALECT,
+    connection: {
+      host: HOST,
+      user: OUSER,
+      password: PASSWORD,
+      database: DB_NAME_PROD,
+    },
+    debug: true,
+    migrations: {
+      directory: `${__dirname}/migrations`,
+    },
+    seeds: {
+      directory: `${__dirname}/seeds`,
+    },
+  }
 };
