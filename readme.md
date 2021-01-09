@@ -70,7 +70,9 @@
 ### Linux
 #### clone the repository and install dependencies:
 ```console
-git clone {repo url}
+git clone https://github.com/LulDelRey/node_challenge.git
+or
+git clone git@github.com:LulDelRey/node_challenge.git
 cd node_challenge
 npm install
 ```
