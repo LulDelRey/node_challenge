@@ -3,7 +3,7 @@ const frisby = require('frisby');
 
 const { LOCAL_URL } = process.env;
 
-const knexInstance = require('../src/knex');
+const knexInstance = require('../knex');
 
 describe('Test suite', () => {
   beforeEach(async () => {
@@ -182,7 +182,7 @@ describe('Test suite', () => {
   });
 
   describe('Admin authors tests', () => {
-    // NEED TO ADD A TOKEN FOR THESES TESTS TO RUN
+    // TODO: need to implement a coorect token to test correctly
     describe('Create authors tests', () => {
       it('Can create an account with success', async () => {
         let token;
@@ -770,7 +770,7 @@ describe('Test suite', () => {
       it('Cannot get a specifc article without token', async () => {});
       it('Cannot get a specific article with invalid token', async () => {});
     });
-    describe('Update articles tests', async () => {
+    describe('Update articles tests', () => {
       it('Can update and article with success', async () => {});
       it('Cannot update an article if not the author', async () => {});
       it('Cannot update an article without token', async () => {});
@@ -781,15 +781,16 @@ describe('Test suite', () => {
       it('Cannot update an article without first paragraph', async () => {});
       it('Cannot update an article without body', async () => {});
     });
-    describe('Delete articles tests', async () => {
+    describe('Delete articles tests', () => {
       it('Can delete article as admin', async () => {});
       it('Can delete article as author', async () => {});
       it('Cannot delete article without token', async () => {});
       it('Cannot delete article with wrong token', async () => {});
     });
-    describe('Search articles tests', async () => {
+    describe('Search articles tests', () => {
       it('Can search an specifc article', async () => {});
-      it('If no query return no articles or all of them', async () => {});
-    })
+      it('Search has to contain category in the query', async () => {});
+      it('If no query return all articles', async () => {});
+    });
   });
 });

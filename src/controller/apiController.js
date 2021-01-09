@@ -2,15 +2,16 @@ const { Router } = require('express');
 const { auth } = require('../middlewares');
 const loginRoute = require('./loginController');
 const signUpRoute = require('./signUpController');
-const adminRoute = require('./adminController');
+const authorsRoute = require('./authorsController');
+const articlesRoute = require('./articlesController');
 const searchRoute = require('./searchController');
 
 const apiRoute = Router({ mergeParams: true });
 
-apiRoute.use('/login', loginRoute);
-apiRoute.use('/sign-up', signUpRoute);
-apiRoute.use('/admin', auth(true), adminRoute);
-apiRoute.use('/articles', searchRoute);
+apiRoute.use('/login', auth(), loginRoute);
+apiRoute.use('/sign-up', auth(), signUpRoute);
+apiRoute.use('/admin/authors', auth(true), authorsRoute);
+apiRoute.use('/admin/articles', auth(true), articlesRoute);
+apiRoute.use('/articles', auth(), searchRoute);
 
 module.exports = apiRoute;
-
