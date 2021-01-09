@@ -1,6 +1,9 @@
+require('dotenv/config');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const { errorHandler } = require('./middlewares');
+const apiRoute = require('./controller/apiController');
 const { PORT } = process.env;
 
 const app = express();
@@ -8,6 +11,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/ping', (_req, res) => res.send('pong!'));
+app.use('/api', apiRoute)
 
-app.listen(PORT || 3000, () => console.log('Listening...'));
+app.use(errorHandler);
+
+app.listen(PORT, () => console.log('Listening...'));
