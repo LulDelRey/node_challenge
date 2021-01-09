@@ -6,8 +6,8 @@
   - [npm](https://www.npmjs.com/)
   - [nodeJs](https://nodejs.org/en/)
   #### SQL database:
-    [mysql](https://www.mysql.com/)
-    [postgresql](https://www.postgresql.org/)
+  - [mysql](https://www.mysql.com/)
+  - [postgresql](https://www.postgresql.org/)
 
 ## Project structure:
 <details>
