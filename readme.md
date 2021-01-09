@@ -10,7 +10,9 @@
     [postgresql](https://www.postgresql.org/)
 
 ## Project structure:
-<details><summary><b>Main structure</b></summary>
+<details>
+    <summary>See structure</summary>
+
 ```console
 .
 ├──coverage/
@@ -49,6 +51,7 @@
 ├──package.json
 └──readme.md
 ```
+
 </details>
 
 ## TEchnologies used:
@@ -64,55 +67,60 @@
   - [pg](https://www.postgresql.org/)
 
 ## Running:
-  #### Linux
-    clone the repository and install dependencies:
-    ```console
-      git clone {repo url}
-      cd node_challenge
-      npm install
-    ```
+### Linux
+#### clone the repository and install dependencies:
+```console
+git clone {repo url}
+cd node_challenge
+npm install
+```
 
-    create the .env file:
-    ```console
-    cd src
-    touch .env
-    ```
+#### create the .env file:
+```console
+cd src
+touch .env
+```
     
-    pass the environment variables:
-    PORT=
-    SECRET=
-    OUSER=
-    PASSWORD=
-    HOST=
-    DB_NAME_PROD=
-    DB_NAME_DEV=
-    DB_NAME_TEST=
-    DB_DIALECT=
-    LOCAL_URL=
+#### pass the environment variables:
+```
+PORT=
+SECRET=
+OUSER=
+PASSWORD=
+HOST=
+DB_NAME_PROD=
+DB_NAME_DEV=
+DB_NAME_TEST=
+DB_DIALECT=
+LOCAL_URL=
+```
 
-    migrate and seed the database:
-    ```console
-    npx knex migrate:rollback
-    npx knex migrate:latest
-    npx knex seed:run
-    ```
+#### migrate and seed the database:
+```console
+npx knex migrate:rollback
+npx knex migrate:latest
+npx knex seed:run
+```
 
-    start with nodeJs:
-    ```console
-      npm start
-    ```
-    start with nodemon:
-    ```console
-      npm run debug
-    ```
-    test the application:
-    ```console
-      npm test
-    ```
-    see tests coverage:
-    ```console
-      npm run testCoverage
-    ```
+#### start with nodeJs:
+```console
+  npm start
+```
+
+#### start with nodemon:
+```console
+  npm run debug
+```
+
+#### test the application:
+```console
+  npm test
+```
+
+#### see tests coverage:
+```console
+  npm run testCoverage
+```
 
 ## Api endpoints:
   - #### Login:
