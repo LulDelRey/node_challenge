@@ -104,22 +104,22 @@ npx knex seed:run
 
 #### start with nodeJs:
 ```console
-  npm start
+npm start
 ```
 
 #### start with nodemon:
 ```console
-  npm run debug
+npm run debug
 ```
 
 #### test the application:
 ```console
-  npm test
+npm test
 ```
 
 #### see tests coverage:
 ```console
-  npm run testCoverage
+npm run testCoverage
 ```
 
 ## Api endpoints:
