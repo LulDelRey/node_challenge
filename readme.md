@@ -146,7 +146,7 @@ npm run testCoverage
 
     - Will return status, message and the object with the information passed
 
-    `POST url + /api/admin/authors`
+      `POST url + /api/admin/authors`
 
   - #### Read authors:
     - Need to be authenticate with an admin user
@@ -155,7 +155,7 @@ npm run testCoverage
 
     - Will return status, message and a list with all the authors on the database
 
-    `GET url + /api/admin/authors`
+      `GET url + /api/admin/authors`
 
   - #### Read author:
     - Need to be authenticate with admin user
@@ -166,7 +166,7 @@ npm run testCoverage
 
     - Otherwise will return 404
 
-    `GET url + /api/admin/authors/:id`
+      `GET url + /api/admin/authors/:id`
 
   - #### Update authors:
     - Need to be authenticate with an admin user
@@ -175,7 +175,7 @@ npm run testCoverage
 
     - Will return status, message and an author object with the new information if it was successfully
 
-    `PUT url + /api/admin/authors/:id`
+      `PUT url + /api/admin/authors/:id`
 
   - #### Delete authors:
     Need to be authenticate with an admin user
@@ -184,7 +184,7 @@ npm run testCoverage
 
     - Will return status, message
 
-    `DELETE url + /api/admin/authors/:id`
+      `DELETE url + /api/admin/authors/:id`
 
   - #### Create articles:
     - Need to be authenticate with an admin user
@@ -193,7 +193,7 @@ npm run testCoverage
 
     - Will return status, message and the article
 
-    `POST url + /api/admin/articles`
+      `POST url + /api/admin/articles`
 
   - #### Read articles:
     - Need to be authenticate with an admin user
@@ -202,7 +202,7 @@ npm run testCoverage
 
     - Wil return status, message and a list with all the articles
 
-    `GET url + /api/admin/articles`
+      `GET url + /api/admin/articles`
 
   - #### Read article:
     - Need to be authenticate with an admin user
@@ -211,7 +211,7 @@ npm run testCoverage
 
     - Will return status, message and complete article if found
 
-    `GET url + /api/admin/articles/:id`
+      `GET url + /api/admin/articles/:id`
 
   - #### Update articles:
     - Need to be authenticate with an admin user
@@ -220,7 +220,7 @@ npm run testCoverage
 
     - Will return status, message and the new article
 
-    `PUT url + /api/admin/articles/:id`
+      `PUT url + /api/admin/articles/:id`
 
   - #### Delete articles:
     - Need to be authenticate with an admin user
@@ -229,16 +229,16 @@ npm run testCoverage
 
     - Will return status, message
 
-    `DELETE url + /api/admin/articles/:id`
+      `DELETE url + /api/admin/articles/:id`
 
   - #### Read specific article:
     - Endpoint expects article id from the request params
 
     - Will return status, message and simple article if found
 
-    `GET url + /api/articles/:id`
+      `GET url + /api/articles/:id`
 
   - #### Query articles by category:
     - Endpoint expects category from the request query, if specified will return all articles for that category, if not, will return all articles
 
-    `GET url + /api/articles?category=someCategory`
+      `GET url + /api/articles?category=someCategory`
