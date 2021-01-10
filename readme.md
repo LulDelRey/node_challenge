@@ -245,6 +245,6 @@ npm run testCoverage
 
 ## Next steps:
   - #### Finish all tests
+  - #### Implement typescript
   - #### Implement a more complete search
   - #### Implement a front end to consume the api
-  - #### Change the paradigm to OO instead of functional

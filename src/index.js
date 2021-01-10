@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const { errorHandler } = require('./middlewares');
-const apiRoute = require('./controller/apiController');
+const apiRoute = require('./controller/apiRoutes');
 const { PORT } = process.env;
 
 const app = express();

@@ -4,6 +4,7 @@ const { retrieveAuthors } = require('../service/authorsServices');
 const authorsRoute = Router({ mergeParams: true });
 
 const createAuthor = (req, res) => {
+  const { name, email, password, picture, role } = req.body;
   return res.status(200).json({ ok: 'ok' });
 };
 

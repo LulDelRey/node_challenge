@@ -26,7 +26,11 @@ const validateEmail = async (email) => {
   if (!email) return { ok: false, status: 400, message: 'Email is missing!' };
   return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)
     ? { ok: true }
-    : { ok: false, status: 400, message: 'Email is not in the correct format!' };
+    : {
+        ok: false,
+        status: 400,
+        message: 'Email is not in the correct format!',
+      };
 };
 
 const validatePassword = (pass) =>
