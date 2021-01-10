@@ -2,7 +2,7 @@
   Article provider api, using rest architecture, managing authentication with a sql database.
   The api has a crud for article's authors and for articles.
 
-## Pre requisites:
+## Pre-requisites:
   - [npm](https://www.npmjs.com/)
   - [nodeJs](https://nodejs.org/en/)
   #### SQL database:
@@ -54,7 +54,7 @@
 
 </details>
 
-## TEchnologies used:
+## Technologies used:
   - [nodeJs](https://nodejs.org/en/)
   - [expressJs](https://expressjs.com/)
   - [jest](https://jestjs.io/)
@@ -244,7 +244,12 @@ npm run testCoverage
       `GET url + /api/articles?category=someCategory`
 
 ## Next steps:
+  - #### Give examples of input and output on the documentation
   - #### Finish all tests
+  - #### Add pagination for the articles
+  - #### Apply cache controle
   - #### Implement typescript
   - #### Implement a more complete search
   - #### Implement a front end to consume the api
+
+## Challenges
