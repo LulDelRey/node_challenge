@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { retrieveAuthors } = require('../service/authorsServices');
 
 const authorsRoute = Router({ mergeParams: true });
 
@@ -6,8 +7,9 @@ const createAuthor = (req, res) => {
   return res.status(200).json({ ok: 'ok' });
 };
 
-const getAuthors = (req, res) => {
-  return res.status(200).json({ ok: 'ok' });
+const getAuthors = async (_req, res) => {
+  const authors = await retrieveAuthors();
+  return res.status(200).json({ status: 200, payload: authors });
 };
 
 const getAuthorById = (req, res) => {
