@@ -242,3 +242,9 @@ npm run testCoverage
     - Endpoint expects category from the request query, if specified will return all articles for that category, if not, will return all articles
 
       `GET url + /api/articles?category=someCategory`
+
+## Next steps:
+  - #### Finish all tests
+  - #### Implement a more complete search
+  - #### Implement a front end to consume the api
+  - #### Change the paradigm to OO instead of functional
