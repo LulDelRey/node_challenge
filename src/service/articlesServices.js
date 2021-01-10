@@ -21,14 +21,12 @@ const createArticleService = async (
 
 const retrieveArticles = async () => {
   const Articles = await Article.query();
-  await knex.destroy();
   return Articles;
 };
 
 const retrieveArticleById = async (id) => {
   // verify id
   const Article = await Article.query().findById(id);
-  await knex.destroy();
   return Article;
 };
 
@@ -57,8 +55,8 @@ const deleteArticleService = async (articleId) => {
 
 module.exports = {
   createArticleService,
+  deleteArticleService,
   retrieveArticles,
   retrieveArticleById,
   updateArticleService,
-  deleteArticleService,
 };
