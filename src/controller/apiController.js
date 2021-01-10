@@ -10,7 +10,7 @@ const apiRoute = Router({ mergeParams: true });
 
 apiRoute.use('/login', auth(), loginRoute);
 apiRoute.use('/sign-up', auth(), signUpRoute);
-apiRoute.use('/admin/authors', auth(true), authorsRoute);
+apiRoute.use('/admin/authors', auth(), authorsRoute);
 apiRoute.use('/admin/articles', auth(true), articlesRoute);
 apiRoute.use('/articles', auth(), searchRoute);
 
