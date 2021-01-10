@@ -4,6 +4,7 @@ const frisby = require('frisby');
 const { LOCAL_URL } = process.env;
 
 const knexInstance = require('../knex');
+console.log(process.env.NODE_ENV);
 
 describe('Create authors tests', () => {
   // TODO: need to implement a coorect token to test correctly
@@ -16,46 +17,49 @@ describe('Create authors tests', () => {
 
   afterAll(async () => knexInstance.destroy());
 
-  it('Can create an account with success', async () => {
-    let token;
-    await frisby
-      .post(`${LOCAL_URL}/api/login`, {
-        email: 'luis@gmail.com',
-        password: 'luis123',
-      })
-      .expect('status', 200)
-      .then((res) => {
-        const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.token).not.toBeUndefined();
-        expect(result.message).toBe('Loged with success!');
-        token = result.token;
-      });
+  it('Can create an author with success', async () => {
+    // let token;
+    // await frisby
+    //   .post(`${LOCAL_URL}/api/login`, {
+    //     email: 'luis@gmail.com',
+    //     password: 'luis123',
+    //   })
+    //   .expect('status', 200)
+    //   .then((res) => {
+    //     const { body } = res;
+    //     const result = JSON.parse(body);
+    //     expect(result.token).not.toBeUndefined();
+    //     expect(result.message).toBe('Loged with success!');
+    //     token = result.token;
+    // });
 
-    await frisby
-      .setup({
-        request: {
-          headers: {
-            Authorization: token,
-            'Content-Type': 'application/json',
-          },
-        },
-      })
-      .post(`${LOCAL_URL}/api/admin/authors`, {
-        name: 'Meu nome',
-        email: 'meuemail@gmail.com',
-        password: 'P@ssw0rd',
-        picture: 'Alguma picture ae',
-        role: 'AUT',
-      })
-      .expect('status', 200)
-      .then((res) => {
-        const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.message).toBe(
-          'User created with success! You can now login.'
-        );
-      });
+    return (
+      frisby
+        // .setup({
+        //   request: {
+        //     headers: {
+        //       Authorization: token,
+        //       'Content-Type': 'application/json',
+        //     },
+        //   },
+        // })
+        .post(`${LOCAL_URL}/api/admin/authors`, {
+          name: 'Meu nome',
+          email: 'meuemail@gmail.com',
+          password: 'P@ssw0rd',
+          picture: 'Some picture there',
+          role: 'CLIENT',
+        })
+        .expect('status', 201)
+        .then((res) => {
+          const { body } = res;
+          const result = JSON.parse(body);
+          expect(result.message).toBe('Author created with success!');
+          expect(result.payload.name).toBe('Meu nome');
+          expect(result.payload.email).toBe('meuemail@gmail.com');
+          expect(result.payload.picture).toBe('Some picture there');
+        })
+    );
   });
 
   it('Cannot create an author without token', async () =>
