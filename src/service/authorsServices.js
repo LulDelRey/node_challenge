@@ -1,31 +1,73 @@
 const { Model } = require('objection');
 const { Author } = require('../model/authorsModel');
+const {
+  validateEmail,
+  validateName,
+  validatePassword,
+  validateId,
+} = require('./validationServices');
 const knex = require('../knex');
 
 Model.knex(knex);
 
-const createAuthorService = async (name, email, password, picture, role) => {
+const createAuthorService = async (
+  name,
+  email,
+  password,
+  picture,
+  role = 'CLIENT'
+) => {
   // verify data
+  const validName = validateName(name);
+  const validEmail = validateEmail(email);
+  const validPass = validatePassword(password);
   // raise error message on wrong information
+  switch (false) {
+    case validName.ok:
+      return validName;
+    case validEmail.ok:
+      return validName;
+    case validPass.ok:
+      return validName;
+    default:
+      break;
+  }
   // create author on db
-  // end connection
+  const {
+    password: removedPass,
+    ...createdAuthor
+  } = await Author.query().insertAndFetch({
+    name,
+    email,
+    password,
+    picture,
+    role,
+  });
   // return message and author created
+  return {
+    ok: true,
+    message: 'Author created with success!',
+    payload: createdAuthor,
+  };
 };
 
 const retrieveAuthors = async () => {
   const authors = await Author.query();
-  await knex.destroy();
   return authors;
 };
 
 const retrieveAuthorById = async (id) => {
   // verify id
-  const author = await Author.query().findById(id);
-  await knex.destroy();
-  return author;
+  if (!isNaN(id)) {
+    return { ok: false, message: 'Not a valid id!' };
+  }
+  const { password, ...author } = await Author.query().findById(id);
+  return { ok: true, message: 'Author found!', payload: author };
 };
 
 const updateAuthorService = async (
+  userId,
+  userRole,
   authorId,
   name,
   email,
@@ -34,23 +76,56 @@ const updateAuthorService = async (
   role
 ) => {
   // verify data
+  const validId = validateId(authorId);
+  const validName = validateName(name);
+  const validEmail = validateEmail(email);
+  const validPass = validatePassword(password);
   // raise error message on wrong information
+  switch (false) {
+    case validId.ok:
+      return validId;
+    case validName.ok:
+      return validName;
+    case validEmail.ok:
+      return validName;
+    case validPass.ok:
+      return validName;
+    case userId !== authorId && userRole !== 'ADMIN':
+      return { ok: false, message: 'User not the author!' };
+    default:
+      break;
+  }
   // update author on db
-  // end connection
+  const updatedAuthor = await Author.query().updateAndFetchById(authorId, {
+    name,
+    email,
+    password,
+    picture,
+    role,
+  });
   // return message and author created
+  return {
+    ok: true,
+    message: 'Author updated successfully',
+    payload: updatedAuthor,
+  };
 };
 
-const deleteAuthorService = async (authorId) => {
+const deleteAuthorService = async (userId, userRole, authorId) => {
   // verify if author is self or admin
-  // raise error if not permission
+  if (userId !== authorId && userRole !== 'ADMIN') {
+    // raise error if not permission
+    return { ok: false, message: 'User not the Author!' };
+  }
   // find and delete author
-  // return 204
+  await Author.query().deleteById(authorId);
+  return { ok: true, message: 'Author deleted with success!' };
 };
 
 module.exports = {
   createAuthorService,
+  deleteAuthorService,
   retrieveAuthors,
   retrieveAuthorById,
   updateAuthorService,
-  deleteAuthorService,
 };
