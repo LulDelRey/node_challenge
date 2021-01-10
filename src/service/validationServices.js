@@ -17,6 +17,7 @@ const validateName = (name) =>
   !name
     ? {
         ok: false,
+        status: 422,
         message: 'Name is missing!',
       }
     : { ok: true };
@@ -27,15 +28,20 @@ const validateEmail = async (email) => {
     ? { ok: true }
     : {
         ok: false,
+        status: 422,
         message: 'Email is not in the correct format!',
       };
 };
 
 const validatePassword = (pass) =>
-  !pass ? { ok: false, message: 'Password is missing!' } : { ok: true };
+  !pass
+    ? { ok: false, status: 422, message: 'Password is missing!' }
+    : { ok: true };
 
 const validateId = (id) =>
-  isNaN(id) ? { ok: false, message: 'Not a valid id!' } : { ok: true };
+  isNaN(id)
+    ? { ok: false, status: 422, message: 'Not a valid id!' }
+    : { ok: true };
 
 module.exports = {
   generateToken,

@@ -46,6 +46,7 @@ const createAuthorService = async (
   // return message and author created
   return {
     ok: true,
+    status: 201,
     message: 'Author created with success!',
     payload: createdAuthor,
   };
@@ -53,16 +54,16 @@ const createAuthorService = async (
 
 const retrieveAuthors = async () => {
   const authors = await Author.query();
-  return authors;
+  return { ok: true, status: 200, message: 'Authors found!', payload: authors };
 };
 
 const retrieveAuthorById = async (id) => {
   // verify id
   if (!isNaN(id)) {
-    return { ok: false, message: 'Not a valid id!' };
+    return { ok: false, status: 422, message: 'Not a valid id!' };
   }
   const { password, ...author } = await Author.query().findById(id);
-  return { ok: true, message: 'Author found!', payload: author };
+  return { ok: true, status: 200, message: 'Author found!', payload: author };
 };
 
 const updateAuthorService = async (
@@ -91,7 +92,7 @@ const updateAuthorService = async (
     case validPass.ok:
       return validName;
     case userId !== authorId && userRole !== 'ADMIN':
-      return { ok: false, message: 'User not the author!' };
+      return { ok: false, status: 403, message: 'User not the author!' };
     default:
       break;
   }
@@ -106,6 +107,7 @@ const updateAuthorService = async (
   // return message and author created
   return {
     ok: true,
+    status: 200,
     message: 'Author updated successfully',
     payload: updatedAuthor,
   };
@@ -115,11 +117,11 @@ const deleteAuthorService = async (userId, userRole, authorId) => {
   // verify if author is self or admin
   if (userId !== authorId && userRole !== 'ADMIN') {
     // raise error if not permission
-    return { ok: false, message: 'User not the Author!' };
+    return { ok: false, status: 403, message: 'User not the Author!' };
   }
   // find and delete author
   await Author.query().deleteById(authorId);
-  return { ok: true, message: 'Author deleted with success!' };
+  return { ok: true, status: 204, message: 'Author deleted with success!' };
 };
 
 module.exports = {
