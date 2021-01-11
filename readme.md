@@ -71,6 +71,8 @@ The api has a crud for article's authors and for articles.
 - [objection](https://vincit.github.io/objection.js/)
 - [mysql](https://www.mysql.com/)
 - [pg](https://www.postgresql.org/)
+- [compression](https://www.npmjs.com/package/compression)
+- [helmet](https://www.npmjs.com/package/helmet)
 
 ## Running:
 
@@ -93,7 +95,7 @@ cd src
 touch .env
 ```
 
-#### pass the environment variables:
+#### Declare the environment variables on the .env file:
 
 ```
 PORT=
@@ -275,6 +277,7 @@ npm run testCoverage
     `GET url + /api/articles?category=someCategory`
 
 ## Next steps:
+
 - #### Make password on the database safe
 - #### Deploy database so the app can make querys
 - #### Give examples of input and output on the documentation
@@ -285,6 +288,12 @@ npm run testCoverage
 - #### Implement a front end to consume the api
 
 ## Challenges
+
 - #### Learn knex + objection
-- #### Deploy database
+
+It took more than i imagined to learn and apply this new orm, but i believe it is working correctly
+
 - #### Organization
+
+I thought I would complete this challenge faster, but i understimated the challenge, resulted
+in 2 - 3 days of more work, however the application is working
