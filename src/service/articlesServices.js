@@ -64,7 +64,17 @@ const createArticleService = async (
 };
 
 const retrieveArticles = async () => {
-  const Articles = await Article.query();
+  const Articles = await Article.query()
+    .select(
+      'aut.name',
+      'aut.picture',
+      'articles.category',
+      'articles.title',
+      'articles.summary',
+      'articles.first_paragraph'
+    )
+    .innerJoin('authors as aut', 'articles.author_id', 'aut.id');
+
   return {
     ok: true,
     status: 200,
@@ -77,7 +87,18 @@ const retrieveArticleById = async (id) => {
   // verify id
   const validId = validateId(id);
   if (!validId.ok) return validId;
-  const Article = await Article.query().findById(id);
+  const Article = await Article.query()
+    .findById(id)
+    .select(
+      'aut.name',
+      'aut.picture',
+      'articles.category',
+      'articles.title',
+      'articles.summary',
+      'articles.first_paragraph'
+    )
+    .innerJoin('authors as aut', 'articles.author_id', 'aut.id');
+
   if (Article) {
     return {
       ok: true,
@@ -91,6 +112,65 @@ const retrieveArticleById = async (id) => {
     status: 404,
     message: 'No article found with this id!',
     payload: Article,
+  };
+};
+
+const retriveSimpleArticles = async (category) => {
+  if (!category) {
+    const articles = await Article.query()
+      .select(
+        'aut.name',
+        'aut.picture',
+        'articles.category',
+        'articles.title',
+        'articles.summary',
+        'articles.first_paragraph'
+      )
+      .innerJoin('authors as aut', 'articles.author_id', 'aut.id');
+
+    return {
+      ok: true,
+      status: 200,
+      message: 'Articles found!',
+      payload: articles,
+    };
+  }
+  const articles = await Article.query()
+    .select(
+      'aut.name',
+      'aut.picture',
+      'articles.category',
+      'articles.title',
+      'articles.summary',
+      'articles.first_paragraph'
+    )
+    .innerJoin('authors as aut', 'articles.author_id', 'aut.id')
+    .where('articles.category', category);
+  return {
+    ok: true,
+    status: 200,
+    message: 'Articles found!',
+    payload: articles,
+  };
+};
+
+const retriveSimpleArticlesById = async (id) => {
+  const articles = await Article.query()
+    .select(
+      'aut.name',
+      'aut.picture',
+      'articles.category',
+      'articles.title',
+      'articles.summary',
+      'articles.first_paragraph'
+    )
+    .innerJoin('authors as aut', 'articles.author_id', 'aut.id')
+    .where('articles.id', id);
+  return {
+    ok: true,
+    status: 200,
+    message: 'Articles found!',
+    payload: articles,
   };
 };
 
@@ -167,5 +247,7 @@ module.exports = {
   deleteArticleService,
   retrieveArticles,
   retrieveArticleById,
+  retriveSimpleArticles,
+  retriveSimpleArticlesById,
   updateArticleService,
 };

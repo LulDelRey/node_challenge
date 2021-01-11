@@ -2,7 +2,7 @@ const { Model } = require('objection');
 
 class Article extends Model {
   static get tableName() {
-    return 'Articles';
+    return 'articles';
   }
 
   static get idColumn() {

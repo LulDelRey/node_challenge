@@ -1,23 +1,31 @@
-const { Router } = require("express");
+const { Router } = require('express');
+const {
+  retriveSimpleArticles,
+  retriveSimpleArticlesById,
+} = require('../service/articlesServices');
 
 const searchRoute = Router({ mergeParams: true });
 
-const searchArticle = async (req, res) => {
+const searchArticle = async (req, res, next) => {
   const { category } = req.query;
-  return res.status(200).json({ category });
+  const { ok, status, message, payload } = await retriveSimpleArticles(
+    category
+  );
+  return ok
+    ? res.status(status).json({ message, payload })
+    : next({ status, message });
 };
 
-const getArticleById = async (req, res) => {
+const getArticleById = async (req, res, next) => {
   const { id } = req.params;
-  return res.status(200).json({ id });
+  const { ok, status, message, payload } = await retriveSimpleArticlesById(id);
+  return ok
+    ? res.status(status).json({ message, payload })
+    : next({ status, message });
 };
 
-searchRoute
-  .route('/')
-  .get(searchArticle);
+searchRoute.route('/').get(searchArticle);
 
-searchRoute
-  .route('/:id')
-  .get(getArticleById);
+searchRoute.route('/:id').get(getArticleById);
 
 module.exports = searchRoute;
