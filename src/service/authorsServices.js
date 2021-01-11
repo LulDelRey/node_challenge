@@ -59,11 +59,13 @@ const retrieveAuthors = async () => {
 
 const retrieveAuthorById = async (id) => {
   // verify id
-  if (!isNaN(id)) {
-    return { ok: false, status: 422, message: 'Not a valid id!' };
+  const validId = validateId(id);
+  if (!validId.ok) return validId;
+  const author = await Author.query().findById(id);
+  if (author) {
+    return { ok: true, status: 200, message: 'Author found!', payload: author };
   }
-  const { password, ...author } = await Author.query().findById(id);
-  return { ok: true, status: 200, message: 'Author found!', payload: author };
+  return { ok: false, status: 404, message: 'No author found with this id!' };
 };
 
 const updateAuthorService = async (

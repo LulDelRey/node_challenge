@@ -31,20 +31,43 @@ const getArticles = async (_req, res) => {
 };
 
 const getArticleById = async (req, res, next) => {
+  const { id } = req.params;
+  const { ok, status, message, payload } = await retrieveArticleById(id);
   return ok
     ? res.status(status).json({ message, payload })
     : next({ status, message });
 };
 
 const updateArticle = async (req, res, next) => {
+  const { id: authorId, role: userRole } = req.user;
+  const { id: articleId } = req.params;
+  const { title, authorIdArt, summary, first_paragraph, body, category } = req.body;
+  const { ok, status, message, payload } = await updateArticleService(
+    authorId,
+    userRole,
+    articleId,
+    title,
+    authorIdArt,
+    summary,
+    first_paragraph,
+    body,
+    category
+  );
   return ok
     ? res.status(status).json({ message, payload })
     : next({ status, message });
 };
 
 const deleteArticle = async (req, res, next) => {
+  const { id: userId, role: userRole } = req.user;
+  const { id: articleId } = req.params;
+  const { ok, status, message } = await deleteArticleService(
+    userId,
+    userRole,
+    articleId
+  );
   return ok
-    ? res.status(status).json({ message, payload })
+    ? res.status(status).json({ message })
     : next({ status, message });
 };
 
@@ -54,5 +77,7 @@ articlesRoute
   .post(createArticle)
   .put(updateArticle)
   .delete(deleteArticle);
+
+articlesRoute.route('/:id').get(getArticleById);
 
 module.exports = articlesRoute;

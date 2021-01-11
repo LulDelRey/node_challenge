@@ -55,7 +55,7 @@ const updateAuthor = async (req, res, next) => {
     : next({ status, message });
 };
 
-const deleteAuthor = async (req, res) => {
+const deleteAuthor = async (req, res, next) => {
   const { id: userId, role: userRole } = req.user;
   const { id: authorId } = req.params;
   const { ok, status, message } = await deleteAuthorService(

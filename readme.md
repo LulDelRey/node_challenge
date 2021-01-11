@@ -244,6 +244,7 @@ npm run testCoverage
       `GET url + /api/articles?category=someCategory`
 
 ## Next steps:
+  - #### Specifie that all update methods has to send the entire information again, otherwise the article will be cleared and left only with the updated field
   - #### Give examples of input and output on the documentation
   - #### Finish all tests
   - #### Add pagination for the articles
