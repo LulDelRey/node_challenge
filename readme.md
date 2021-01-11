@@ -278,12 +278,12 @@ npm run testCoverage
 
 ## Next steps:
 
-- #### Chane de api database when testing
-- #### Make password on the database safe
-- #### Deploy database so the app can make querys
-- #### Give examples of input and output on the documentation
 - #### Finish all tests
+- #### Change de api database when testing
+- #### Make password on the database safe
+- #### Deploy database
 - #### Add pagination for the articles
+- #### Give examples of input and output on the documentation
 - #### Implement typescript
 - #### Implement a more complete search
 - #### Implement a front end to consume the api
@@ -292,9 +292,8 @@ npm run testCoverage
 
 - #### Learn knex + objection
 
-It took more than i imagined to learn and apply this new orm, but i believe it is working correctly
+It was a real challenge to apply this new ORM, but I've tried my best and I believe is working!
 
 - #### Organization
 
-I thought I would complete this challenge faster, but i understimated the challenge, resulted
-in 2 - 3 days of more work, however the application is working
+First I was overwhelmed with so much I had to do, so I started a kinda o TDD, then I followed the tests lead and now I'm finishing the tests!
