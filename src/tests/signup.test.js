@@ -39,6 +39,7 @@ describe('Sign up tests', () => {
         expect(result.payload.name).toBe(newUser.name);
         expect(result.payload.email).toBe(newUser.email);
         expect(result.payload.picture).toBe(newUser.picture);
+        expect(result.payload.password).toBeUndefined();
       }));
 
   it('Cannot create a user without name', async () =>

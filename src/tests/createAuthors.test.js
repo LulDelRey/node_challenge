@@ -4,7 +4,6 @@ const frisby = require('frisby');
 const { LOCAL_URL } = process.env;
 
 const knexInstance = require('../knex');
-console.log(process.env.NODE_ENV);
 
 describe('Create authors tests', () => {
   beforeEach(async () => {
@@ -23,53 +22,51 @@ describe('Create authors tests', () => {
   });
 
   it('Can create an author with success', async () => {
-    // let token;
-    // await frisby
-    //   .post(`${LOCAL_URL}/api/login`, {
-    //     email: 'luis@gmail.com',
-    //     password: 'luis123',
-    //   })
-    //   .expect('status', 200)
-    //   .then((res) => {
-    //     const { body } = res;
-    //     const result = JSON.parse(body);
-    //     expect(result.token).not.toBeUndefined();
-    //     expect(result.message).toBe('Loged with success!');
-    //     token = result.token;
-    // });
+    let token;
+    await frisby
+      .post(`${LOCAL_URL}/login`, {
+        email: 'luis@gmail.com',
+        password: 'luis123',
+      })
+      .expect('status', 200)
+      .then((res) => {
+        const { body } = res;
+        const result = JSON.parse(body);
+        expect(result.payload).toBeDefined();
+        token = result.payload;
+      });
 
-    return (
-      frisby
-        // .setup({
-        //   request: {
-        //     headers: {
-        //       Authorization: token,
-        //       'Content-Type': 'application/json',
-        //     },
-        //   },
-        // })
-        .post(`${LOCAL_URL}/api/admin/authors`, {
-          name: 'Meu nome',
-          email: 'meuemail@gmail.com',
-          password: 'P@ssw0rd',
-          picture: 'Some picture there',
-          role: 'CLIENT',
-        })
-        .expect('status', 201)
-        .then((res) => {
-          const { body } = res;
-          const result = JSON.parse(body);
-          expect(result.message).toBe('Author created with success!');
-          expect(result.payload.name).toBe('Meu nome');
-          expect(result.payload.email).toBe('meuemail@gmail.com');
-          expect(result.payload.picture).toBe('Some picture there');
-        })
-    );
+    await frisby
+      .setup({
+        request: {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json',
+          },
+        },
+      })
+      .post(`${LOCAL_URL}/admin/authors`, {
+        name: 'Outro lul',
+        email: 'lul2@gmail.com',
+        password: 'luls2123',
+        picture: 'Some picture',
+        role: 'CLIENT',
+      })
+      .expect('status', 201)
+      .then((res) => {
+        const { body } = res;
+        const { message, payload } = JSON.parse(body);
+        expect(message).toBe('Author created with success!');
+        expect(payload.id).toBe(4);
+        expect(payload.name).toBe('Outro lul');
+        expect(payload.email).toBe('lul2@gmail.com');
+        expect(payload.password).toBeUndefined();
+      });
   });
 
   it('Cannot create an author without token', async () =>
     frisby
-      .post(`${LOCAL_URL}/api/admin/authors`, {
+      .post(`${LOCAL_URL}/admin/authors`, {
         name: 'Meu nome',
         email: 'meuemail@gmail.com',
         password: 'P@ssw0rd',
@@ -93,7 +90,7 @@ describe('Create authors tests', () => {
           },
         },
       })
-      .post(`${LOCAL_URL}/api/admin/authors`, {
+      .post(`${LOCAL_URL}/admin/authors`, {
         name: 'Meu nome',
         email: 'meuemail@gmail.com',
         password: 'P@ssw0rd',
@@ -110,7 +107,7 @@ describe('Create authors tests', () => {
   it('Cannot create a user without name', async () => {
     let token;
     await frisby
-      .post(`${LOCAL_URL}/api/login`, {
+      .post(`${LOCAL_URL}/login`, {
         email: 'luis@gmail.com',
         password: 'luis123',
       })
@@ -118,9 +115,8 @@ describe('Create authors tests', () => {
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.token).not.toBeUndefined();
-        expect(result.message).toBe('Loged with success!');
-        token = result.token;
+        expect(result.payload).toBeDefined();
+        token = result.payload;
       });
 
     await frisby
@@ -132,25 +128,24 @@ describe('Create authors tests', () => {
           },
         },
       })
-      .post(`${LOCAL_URL}/api/admin/authors`, {
-        name: '',
-        email: 'meuemail@gmail.com',
-        password: 'P@ssw0rd',
-        picture: 'Alguma picture ae',
-        role: 'AUT',
+      .post(`${LOCAL_URL}/admin/authors`, {
+        email: 'lul2@gmail.com',
+        password: 'luls2123',
+        picture: 'Some picture',
+        role: 'CLIENT',
       })
-      .expect('status', 400)
+      .expect('status', 422)
       .then((res) => {
         const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.message).toBe('Missing name!');
+        const { message } = JSON.parse(body);
+        expect(message).toBe('Name is missing!');
       });
   });
 
   it('Cannot create a user without email', async () => {
     let token;
     await frisby
-      .post(`${LOCAL_URL}/api/login`, {
+      .post(`${LOCAL_URL}/login`, {
         email: 'luis@gmail.com',
         password: 'luis123',
       })
@@ -158,9 +153,8 @@ describe('Create authors tests', () => {
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.token).toBeUndefined();
-        expect(result.message).toBe('Loged with success!');
-        token = result.token;
+        expect(result.payload).toBeDefined();
+        token = result.payload;
       });
 
     await frisby
@@ -172,25 +166,24 @@ describe('Create authors tests', () => {
           },
         },
       })
-      .post(`${LOCAL_URL}/api/admin/authors`, {
-        name: 'Meu nome',
-        email: '',
-        password: 'P@ssw0rd',
-        picture: 'Alguma picture ae',
-        role: 'AUT',
+      .post(`${LOCAL_URL}/admin/authors`, {
+        name: 'Outro lul',
+        password: 'luls2123',
+        picture: 'Some picture',
+        role: 'CLIENT',
       })
-      .expect('status', 400)
+      .expect('status', 422)
       .then((res) => {
         const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.message).toBe('Missing email!');
+        const { message } = JSON.parse(body);
+        expect(message).toBe('Email is missing!');
       });
   });
 
   it('Cannot create a user with wrong email', async () => {
     let token;
     await frisby
-      .post(`${LOCAL_URL}/api/login`, {
+      .post(`${LOCAL_URL}/login`, {
         email: 'luis@gmail.com',
         password: 'luis123',
       })
@@ -198,9 +191,8 @@ describe('Create authors tests', () => {
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.token).not.toBeUndefined();
-        expect(result.message).toBe('Loged with success!');
-        token = result.token;
+        expect(result.payload).toBeDefined();
+        token = result.payload;
       });
 
     await frisby
@@ -212,25 +204,25 @@ describe('Create authors tests', () => {
           },
         },
       })
-      .post(`${LOCAL_URL}/api/admin/authors`, {
-        name: 'Meu nome',
-        email: 'meuemail.gmail.com',
-        password: 'P@ssw0rd',
-        picture: 'Alguma picture ae',
-        role: 'AUT',
+      .post(`${LOCAL_URL}/admin/authors`, {
+        name: 'Outro lul',
+        email: 'lul2.gmail.com',
+        password: 'luls2123',
+        picture: 'Some picture',
+        role: 'CLIENT',
       })
-      .expect('status', 400)
+      .expect('status', 422)
       .then((res) => {
         const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.message).toBe('Email is not in the correct format!');
+        const { message } = JSON.parse(body);
+        expect(message).toBe('Email is not in the correct format!');
       });
   });
 
   it('Cannot create a user with wrong email too', async () => {
     let token;
     await frisby
-      .post(`${LOCAL_URL}/api/login`, {
+      .post(`${LOCAL_URL}/login`, {
         email: 'luis@gmail.com',
         password: 'luis123',
       })
@@ -238,9 +230,8 @@ describe('Create authors tests', () => {
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.token).not.toBeUndefined();
-        expect(result.message).toBe('Loged with success!');
-        token = result.token;
+        expect(result.payload).toBeDefined();
+        token = result.payload;
       });
 
     await frisby
@@ -252,25 +243,25 @@ describe('Create authors tests', () => {
           },
         },
       })
-      .post(`${LOCAL_URL}/api/admin/authors`, {
-        name: 'Meu nome',
-        email: 'meuemailgmailcom',
-        password: 'P@ssw0rd',
-        picture: 'Alguma picture ae',
-        role: 'AUT',
+      .post(`${LOCAL_URL}/admin/authors`, {
+        name: 'Outro lul',
+        email: 'lul2r4gmail.com',
+        password: 'luls2123',
+        picture: 'Some picture',
+        role: 'CLIENT',
       })
-      .expect('status', 400)
+      .expect('status', 422)
       .then((res) => {
         const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.message).toBe('Email is not in the correct format!');
+        const { message } = JSON.parse(body);
+        expect(message).toBe('Email is not in the correct format!');
       });
   });
 
   it('Cannot create a user without password', async () => {
     let token;
     await frisby
-      .post(`${LOCAL_URL}/api/login`, {
+      .post(`${LOCAL_URL}/login`, {
         email: 'luis@gmail.com',
         password: 'luis123',
       })
@@ -278,9 +269,8 @@ describe('Create authors tests', () => {
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.token).not.toBeUndefined();
-        expect(result.message).toBe('Loged with success!');
-        token = result.token;
+        expect(result.payload).toBeDefined();
+        token = result.payload;
       });
 
     await frisby
@@ -292,98 +282,17 @@ describe('Create authors tests', () => {
           },
         },
       })
-      .post(`${LOCAL_URL}/api/admin/authors`, {
-        name: 'Meu nome',
-        email: 'meuemail@gmail.com',
-        password: '',
-        picture: 'Alguma picture ae',
-        role: 'AUT',
+      .post(`${LOCAL_URL}/admin/authors`, {
+        name: 'Outro lul',
+        email: 'lul2@gmail.com',
+        picture: 'Some picture',
+        role: 'CLIENT',
       })
-      .expect('status', 400)
+      .expect('status', 422)
       .then((res) => {
         const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.message).toBe('Missing password!');
-      });
-  });
-
-  it('Cannot create a user with small password', async () => {
-    let token;
-    await frisby
-      .post(`${LOCAL_URL}/api/login`, {
-        email: 'luis@gmail.com',
-        password: 'luis123',
-      })
-      .expect('status', 200)
-      .then((res) => {
-        const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.token).not.toBeUndefined();
-        expect(result.message).toBe('Loged with success!');
-        token = result.token;
-      });
-
-    await frisby
-      .setup({
-        request: {
-          headers: {
-            Authorization: token,
-            'Content-Type': 'application/json',
-          },
-        },
-      })
-      .post(`${LOCAL_URL}/api/admin/authors`, {
-        name: 'Meu nome',
-        email: 'meuemail@gmail.com',
-        password: '1',
-        picture: 'Alguma picture ae',
-        role: 'AUT',
-      })
-      .expect('status', 400)
-      .then((res) => {
-        const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.message).toBe('Password is too small!');
-      });
-  });
-
-  it('Cannot create user without role', async () => {
-    let token;
-    await frisby
-      .post(`${LOCAL_URL}/api/login`, {
-        email: 'luis@gmail.com',
-        password: 'luis123',
-      })
-      .expect('status', 200)
-      .then((res) => {
-        const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.token).not.toBeDefined();
-        expect(result.message).toBe('Loged with success!');
-        token = result.token;
-      });
-
-    await frisby
-      .setup({
-        request: {
-          headers: {
-            Authorization: token,
-            'Content-Type': 'application/json',
-          },
-        },
-      })
-      .post(`${LOCAL_URL}/api/admin/authors`, {
-        name: 'Meu nome',
-        email: 'meuemail@gmail.com',
-        password: '1',
-        picture: 'Alguma picture ae',
-        role: '',
-      })
-      .expect('status', 400)
-      .then((res) => {
-        const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.message).toBe('Missing role!');
+        const { message } = JSON.parse(body);
+        expect(message).toBe('Password is missing!');
       });
   });
 });

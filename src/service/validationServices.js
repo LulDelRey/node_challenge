@@ -30,27 +30,27 @@ const validateId = (id) =>
 
 const validateTitle = (title) =>
   !title
-    ? { ok: false, status: 422, message: 'Title cannot be empty!' }
+    ? { ok: false, status: 422, message: 'Title is missing!' }
     : { ok: true };
 
 const validateSummary = (summary) =>
   !summary
-    ? { ok: false, status: 422, message: 'Summary cannot be empty!' }
+    ? { ok: false, status: 422, message: 'Summary is missing!' }
     : { ok: true };
 
 const validateFirstParagraph = (firstParagraph) =>
   !firstParagraph
-    ? { ok: false, status: 422, message: 'First paragraph cannot be empty!' }
+    ? { ok: false, status: 422, message: 'First paragraph is missing!' }
     : { ok: true };
 
 const validateBody = (body) =>
   !body
-    ? { ok: false, status: 422, message: 'Body cannot be empty!' }
+    ? { ok: false, status: 422, message: 'Body is missing!' }
     : { ok: true };
 
 const validateCategory = (category) =>
   !category
-    ? { ok: false, status: 422, message: 'Category cannot be empty!' }
+    ? { ok: false, status: 422, message: 'Category is missing!' }
     : { ok: true };
 
 module.exports = {

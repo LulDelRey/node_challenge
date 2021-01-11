@@ -21,7 +21,10 @@ const createAuthorService = async (
   const validName = validateName(name);
   const validEmail = validateEmail(email);
   const validPass = validatePassword(password);
-  const user = await Author.query().where('email', email);
+  let user;
+  if (validEmail.ok) {
+    user = await Author.query().where('email', email);
+  }
   // raise error message on wrong information
   switch (false) {
     case validName.ok:
@@ -123,7 +126,6 @@ const updateAuthorService = async (
 
 const deleteAuthorService = async (userId, userRole, authorId) => {
   // verify if author is self or admin
-  console.log(userId, userRole, authorId);
   if (userId === authorId || userRole === 'ADMIN') {
     // find and delete author
     await Author.query().deleteById(authorId);

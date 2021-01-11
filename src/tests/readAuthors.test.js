@@ -21,50 +21,19 @@ describe('Read authors tests', () => {
       .then(async () => knexInstance.destroy());
   });
 
-  const testArr = [
-    {
-      name: 'Luis',
-      email: 'luis@gmail.com',
-      password: 'luis123',
-      picture: 'alguma',
-      role: 'ADMIN',
-    },
-    {
-      name: 'Eduardo',
-      email: 'eduedu@gmail.com',
-      password: 'edu123',
-      picture: 'algumatbm',
-      role: 'CLIENT',
-    },
-    {
-      name: 'Mari',
-      email: 'mari@gmail.com',
-      password: 'mari123',
-      picture: 'outra',
-      role: 'CLIENT',
-    },
-  ];
-  const testAut = {
-    name: 'Luis',
-    email: 'luis@gmail.com',
-    password: 'luis123',
-    picture: 'alguma',
-    role: 'ADMIN',
-  };
-
   it('Can get all the authors', async () => {
     let token;
     await frisby
-      .post(`${LOCAL_URL}/api/login`, {
-        email: 'meuemail@gmail.com',
-        password: 'P@ssw0rd',
+      .post(`${LOCAL_URL}/login`, {
+        email: 'luis@gmail.com',
+        password: 'luis123',
       })
       .expect('status', 200)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.token).not.toBeDefined();
-        token = result.token;
+        expect(result.payload).toBeDefined();
+        token = result.payload;
       });
 
     await frisby
@@ -80,14 +49,18 @@ describe('Read authors tests', () => {
       .expect('status', 200)
       .then((res) => {
         const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.payload).toEqual(testPayload);
+        const { message, payload } = JSON.parse(body);
+        expect(message).toBe('Authors found!');
+        expect(payload.length).toBe(3);
+        expect(payload[0].id).toBe(1);
+        expect(payload[0].name).toBe('Luis');
+        expect(payload[0].role).toBe('ADMIN');
       });
   });
 
   it('Cannot get all the authors without token', async () =>
     frisby
-      .get(`${LOCAL_URL}/api/admin/authors`)
+      .get(`${LOCAL_URL}/admin/authors`)
       .expect('status', 401)
       .then((res) => {
         const { body } = res;
@@ -105,7 +78,7 @@ describe('Read authors tests', () => {
           },
         },
       })
-      .get(`${LOCAL_URL}/api/admin/authors`)
+      .post(`${LOCAL_URL}/admin/authors`)
       .expect('status', 401)
       .then((res) => {
         const { body } = res;
@@ -116,16 +89,16 @@ describe('Read authors tests', () => {
   it('Can get a specific author', async () => {
     let token;
     await frisby
-      .post(`${LOCAL_URL}/api/login`, {
-        email: 'meuemail@gmail.com',
-        password: 'P@ssw0rd',
+      .post(`${LOCAL_URL}/login`, {
+        email: 'luis@gmail.com',
+        password: 'luis123',
       })
       .expect('status', 200)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.token).not.toBeUndefined();
-        token = result.token;
+        expect(result.payload).toBeDefined();
+        token = result.payload;
       });
 
     await frisby
@@ -137,28 +110,31 @@ describe('Read authors tests', () => {
           },
         },
       })
-      .get(`${LOCAL_URL}/api/admin/authors/1`)
+      .get(`${LOCAL_URL}/admin/authors/1`)
       .expect('status', 200)
       .then((res) => {
         const { body } = res;
-        const result = JSON.parse(body);
-        expect(result.payload).toEqual(testAut);
+        const { message, payload } = JSON.parse(body);
+        expect(message).toBe('Author found!');
+        expect(payload.id).toBe(1);
+        expect(payload.name).toBe('Luis');
+        expect(payload.role).toBe('ADMIN');
       });
   });
 
   it('Cannot get a nonexistent author', async () => {
     let token;
     await frisby
-      .post(`${LOCAL_URL}/api/login`, {
-        email: 'meuemail@gmail.com',
-        password: 'P@ssw0rd',
+      .post(`${LOCAL_URL}/login`, {
+        email: 'luis@gmail.com',
+        password: 'luis123',
       })
       .expect('status', 200)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.token).not.toBeUndefined();
-        token = result.token;
+        expect(result.payload).toBeDefined();
+        token = result.payload;
       });
 
     await frisby
@@ -170,18 +146,18 @@ describe('Read authors tests', () => {
           },
         },
       })
-      .get(`${LOCAL_URL}/api/admin/authors/12312`)
+      .get(`${LOCAL_URL}/admin/authors/12312`)
       .expect('status', 404)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Author not found!');
+        expect(result.message).toBe('No author found with this id!');
       });
   });
 
   it('Cannot get a specifc author without token', async () =>
     frisby
-      .get(`${LOCAL_URL}/api/admin/authors/1`)
+      .get(`${LOCAL_URL}/admin/authors/1`)
       .expect('status', 401)
       .then((res) => {
         const { body } = res;
@@ -199,7 +175,7 @@ describe('Read authors tests', () => {
           },
         },
       })
-      .post(`${LOCAL_URL}/api/admin/authors/1`)
+      .post(`${LOCAL_URL}/admin/authors/1`)
       .expect('status', 401)
       .then((res) => {
         const { body } = res;

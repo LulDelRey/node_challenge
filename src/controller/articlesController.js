@@ -68,7 +68,6 @@ const updateArticle = async (req, res, next) => {
 const deleteArticle = async (req, res, next) => {
   const { id: userId, role: userRole } = req.user;
   const { id: articleId } = req.params;
-  console.log(userId, userRole, articleId);
   const { ok, status, message } = await deleteArticleService(
     userId,
     userRole,

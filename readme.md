@@ -3,6 +3,10 @@
 Article provider api, using rest architecture, managing authentication with a sql database.
 The api has a crud for article's authors and for articles.
 
+## Known bugs:
+
+- There are some tests that aren't passing because apparently frisby wasn't sending the token to the headers
+
 ## Pre-requisites:
 
 - [npm](https://www.npmjs.com/)
