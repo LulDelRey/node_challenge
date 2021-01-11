@@ -160,7 +160,7 @@ npm run testCoverage
 
 - #### Create authors:
 
-  - Need to be authenticate with an admin user
+  - Need to be authenticated with an admin user
 
   - Enpoint expects name, email, password, picture and role on the request body
 
@@ -170,7 +170,7 @@ npm run testCoverage
 
 - #### Read authors:
 
-  - Need to be authenticate with an admin user
+  - Need to be authenticated with an admin user
 
   - Endpoint expects no parameter
 
@@ -180,7 +180,7 @@ npm run testCoverage
 
 - #### Read author:
 
-  - Need to be authenticate with admin user
+  - Need to be authenticated with admin user
 
   - Endpoint expects author id on the request params
 
@@ -192,7 +192,7 @@ npm run testCoverage
 
 - #### Update authors:
 
-  - Need to be authenticate with an admin user
+  - Need to be authenticated with an admin user
 
   - Endpoint expects author id on the request params and author new information on the request body, all information has to be sent again in order to not update to empty values
 
@@ -202,7 +202,7 @@ npm run testCoverage
 
 - #### Delete authors:
 
-  Need to be authenticate with an admin user
+  Need to be authenticated with an admin user
 
   - Endpoint expects author id on the request params
 
@@ -212,7 +212,7 @@ npm run testCoverage
 
 - #### Create articles:
 
-  - Need to be authenticate with an admin user
+  - Need to be authenticated with an admin user
 
   - Endpoint expects author id from token, title, summary, first_paragraph, body and categories
 
@@ -222,7 +222,7 @@ npm run testCoverage
 
 - #### Read articles:
 
-  - Need to be authenticate with an admin user
+  - Need to be authenticated with an admin user
 
   - Endpoint expects the user to be authenticated
 
@@ -232,7 +232,7 @@ npm run testCoverage
 
 - #### Read article:
 
-  - Need to be authenticate with an admin user
+  - Need to be authenticated with an admin user
 
   - Endpoint expects article id from the request params
 
@@ -242,7 +242,7 @@ npm run testCoverage
 
 - #### Update articles:
 
-  - Need to be authenticate with an admin user
+  - Need to be authenticated with an admin user
 
   - Endpoint expects article id, author id from the token or admin, and the new information for the article, all information has to be sent again in order to not update to empty values
 
@@ -252,7 +252,7 @@ npm run testCoverage
 
 - #### Delete articles:
 
-  - Need to be authenticate with an admin user
+  - Need to be authenticated with an admin user
 
   - Endpoint expects article id from the request params, author id from the token or admin
 
@@ -275,12 +275,15 @@ npm run testCoverage
     `GET url + /api/articles?category=someCategory`
 
 ## Next steps:
+- #### Deploy database so the app can make querys
 - #### Give examples of input and output on the documentation
 - #### Finish all tests
 - #### Add pagination for the articles
-- #### Apply cache controle
 - #### Implement typescript
 - #### Implement a more complete search
 - #### Implement a front end to consume the api
 
 ## Challenges
+- #### Learn knex + objection
+- #### Deploy database
+- #### Organization
