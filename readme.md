@@ -275,6 +275,7 @@ npm run testCoverage
     `GET url + /api/articles?category=someCategory`
 
 ## Next steps:
+- #### Make password on the database safe
 - #### Deploy database so the app can make querys
 - #### Give examples of input and output on the documentation
 - #### Finish all tests
