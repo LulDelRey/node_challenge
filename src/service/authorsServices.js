@@ -126,7 +126,6 @@ const updateAuthorService = async (
 
 const deleteAuthorService = async (userId, userRole, authorId) => {
   // verify if author is self or admin
-  console.log(userId, userRole, authorId);
   if (userId === authorId || userRole === 'ADMIN') {
     // find and delete author
     await Author.query().deleteById(authorId);
