@@ -52,7 +52,7 @@ const createArticleService = async (
     summary,
     first_paragraph,
     body,
-    category,
+    category: category.toLowerCase(),
   });
   // return message and Article created
   return {
@@ -87,35 +87,31 @@ const retrieveArticleById = async (id) => {
   // verify id
   const validId = validateId(id);
   if (!validId.ok) return validId;
-  try {
-    const Article = await Article.query()
-      .findById(id)
-      .innerJoin('authors as aut', 'articles.author_id', 'aut.id')
-      .select(
-        'aut.name',
-        'aut.picture',
-        'articles.category',
-        'articles.title',
-        'articles.summary',
-        'articles.first_paragraph'
-      );
+  const article = await Article.query()
+    .findById(id)
+    .innerJoin('authors as aut', 'articles.author_id', 'aut.id')
+    .select(
+      'aut.name',
+      'aut.picture',
+      'articles.category',
+      'articles.title',
+      'articles.summary',
+      'articles.first_paragraph'
+    );
 
-    if (Article) {
-      return {
-        ok: true,
-        status: 200,
-        message: 'Article found!',
-        payload: Article,
-      };
-    }
-  } catch (err) {
+  if (article) {
     return {
-      ok: false,
-      status: 404,
-      message: 'No article found with this id!',
-      payload: Article,
+      ok: true,
+      status: 200,
+      message: 'Article found!',
+      payload: article,
     };
   }
+  return {
+    ok: false,
+    status: 404,
+    message: 'No article found with this id!',
+  };
 };
 
 const retriveSimpleArticles = async (category) => {
@@ -148,7 +144,7 @@ const retriveSimpleArticles = async (category) => {
       'articles.first_paragraph'
     )
     .innerJoin('authors as aut', 'articles.author_id', 'aut.id')
-    .where('articles.category', category);
+    .where('articles.category', category.toLowerCase());
   return {
     ok: true,
     status: 200,

@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const authenticate = (required = false) => async (req, _res, next) => {
-  const { authorization: token } = req.headers;
+  const { Authorization: token } = req.headers;
   const { SECRET } = process.env;
+  console.log(req.headers);
   if (!required) return next();
   if (!token) {
     return next({ status: 401, message: 'Token not found!' });

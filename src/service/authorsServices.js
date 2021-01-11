@@ -21,7 +21,10 @@ const createAuthorService = async (
   const validName = validateName(name);
   const validEmail = validateEmail(email);
   const validPass = validatePassword(password);
-  const user = await Author.query().where('email', email);
+  let user;
+  if (validEmail.ok) {
+    user = await Author.query().where('email', email);
+  }
   // raise error message on wrong information
   switch (false) {
     case validName.ok:

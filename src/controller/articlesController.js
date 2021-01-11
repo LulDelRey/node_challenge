@@ -10,6 +10,7 @@ const {
 const articlesRoute = Router({ mergeParams: true });
 
 const createArticle = async (req, res, next) => {
+  console.log('CONTROLLER');
   const { id: authorId } = req.user;
   const { title, summary, first_paragraph, body, category } = req.body;
   const { ok, message, payload } = await createArticleService(
