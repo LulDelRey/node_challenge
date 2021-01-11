@@ -6,6 +6,13 @@ const { LOCAL_URL } = process.env;
 const knexInstance = require('../knex');
 
 describe('Sign up tests', () => {
+  const newUser = {
+    name: 'Meu nome',
+    email: 'meuemail@gmail.com',
+    password: 'P@ssw0rd',
+    picture: 'Alguma picture ae',
+  };
+
   beforeEach(async () => {
     return knexInstance.migrate
       .rollback()
@@ -13,64 +20,64 @@ describe('Sign up tests', () => {
       .then(async () => knexInstance.seed.run());
   });
 
-  afterAll(async () => knexInstance.destroy());
+  afterAll(async () => {
+    return knexInstance.migrate
+      .rollback()
+      .then(async () => knexInstance.migrate.latest())
+      .then(async () => knexInstance.seed.run())
+      .then(async () => knexInstance.destroy());
+  });
 
   it('Can create an account with success', async () =>
     frisby
-      .post(`${LOCAL_URL}/api/sign-up`, {
-        name: 'Meu nome',
-        email: 'meuemail@gmail.com',
-        password: 'P@ssw0rd',
-        picture: 'Alguma picture ae',
-      })
-      .expect('status', 200)
+      .post(`${LOCAL_URL}/sign-up`, newUser)
+      .expect('status', 201)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.message).toBe(
-          'User created with success! You can now login.'
-        );
+        expect(result.message).toBe('Author created with success!');
+        expect(result.payload.name).toBe(newUser.name);
+        expect(result.payload.email).toBe(newUser.email);
+        expect(result.payload.picture).toBe(newUser.picture);
       }));
 
   it('Cannot create a user without name', async () =>
     frisby
-      .post(`${LOCAL_URL}/api/sign-up`, {
-        name: '',
+      .post(`${LOCAL_URL}/sign-up`, {
         email: 'meuemail@gmail.com',
         password: 'P@ssw0rd',
         picture: 'Alguma picture ae',
       })
-      .expect('status', 400)
+      .expect('status', 422)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Missing name!');
+        expect(result.message).toBe('Name is missing!');
       }));
 
   it('Cannot create a user without email', async () =>
     frisby
-      .post(`${LOCAL_URL}/api/sign-up`, {
+      .post(`${LOCAL_URL}/sign-up`, {
         name: 'Meu nome',
-        email: '',
         password: 'P@ssw0rd',
         picture: 'Alguma picture ae',
       })
-      .expect('status', 400)
+      .expect('status', 422)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Missing email!');
+        expect(result.message).toBe('Email is missing!');
       }));
 
   it('Cannot create a user with wrong email', async () =>
     frisby
-      .post(`${LOCAL_URL}/api/sign-up`, {
+      .post(`${LOCAL_URL}/sign-up`, {
         name: 'Meu nome',
         email: 'meuemail.gmail.com',
         password: 'P@ssw0rd',
         picture: 'Alguma picture ae',
       })
-      .expect('status', 400)
+      .expect('status', 422)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
@@ -79,13 +86,13 @@ describe('Sign up tests', () => {
 
   it('Cannot create a user with wrong email too', async () =>
     frisby
-      .post(`${LOCAL_URL}/api/sign-up`, {
+      .post(`${LOCAL_URL}/sign-up`, {
         name: 'Meu nome',
         email: 'meuemailgmailcom',
         password: 'P@ssw0rd',
         picture: 'Alguma picture ae',
       })
-      .expect('status', 400)
+      .expect('status', 422)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
@@ -94,31 +101,30 @@ describe('Sign up tests', () => {
 
   it('Cannot create a user without password', async () =>
     frisby
-      .post(`${LOCAL_URL}/api/sign-up`, {
+      .post(`${LOCAL_URL}/sign-up`, {
         name: 'Meu nome',
         email: 'meuemail@gmail.com',
-        password: '',
         picture: 'Alguma picture ae',
       })
-      .expect('status', 400)
+      .expect('status', 422)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Missing password!');
+        expect(result.message).toBe('Password is missing!');
       }));
 
-  it('Cannot create a user with small password', async () =>
+  it('Cannot create a user that already exists', async () =>
     frisby
-      .post(`${LOCAL_URL}/api/sign-up`, {
-        name: 'Meu nome',
-        email: 'meuemail@gmail.com',
-        password: '1',
-        picture: 'Alguma picture ae',
+      .post(`${LOCAL_URL}/sign-up`, {
+        name: 'Luis',
+        email: 'luis@gmail.com',
+        password: 'luis123',
+        picture: 'alguma',
       })
-      .expect('status', 400)
+      .expect('status', 409)
       .then((res) => {
         const { body } = res;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Password is too small!');
+        expect(result.message).toBe('User already exists with this info!');
       }));
 });

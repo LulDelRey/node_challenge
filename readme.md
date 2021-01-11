@@ -278,6 +278,7 @@ npm run testCoverage
 
 ## Next steps:
 
+- #### Chane de api database when testing
 - #### Make password on the database safe
 - #### Deploy database so the app can make querys
 - #### Give examples of input and output on the documentation

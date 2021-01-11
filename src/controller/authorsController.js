@@ -59,7 +59,7 @@ const deleteAuthor = async (req, res, next) => {
   const { id: userId, role: userRole } = req.user;
   const { id: authorId } = req.params;
   const { ok, status, message } = await deleteAuthorService(
-    userId,
+    String(userId),
     userRole,
     authorId
   );

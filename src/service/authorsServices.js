@@ -27,10 +27,10 @@ const createAuthorService = async (
     case validName.ok:
       return validName;
     case validEmail.ok:
-      return validName;
+      return validEmail;
     case validPass.ok:
-      return validName;
-    case user:
+      return validPass;
+    case user.length === 0:
       return {
         ok: false,
         status: 409,
@@ -40,22 +40,21 @@ const createAuthorService = async (
       break;
   }
   // create author on db
-  const {
-    password: removedPass,
-    ...createdAuthor
-  } = await Author.query().insertAndFetch({
-    name,
-    email,
-    password,
-    picture,
-    role,
-  });
+  const { password: userPass, ...author } = await Author.query().insertAndFetch(
+    {
+      name,
+      email,
+      password,
+      picture,
+      role,
+    }
+  );
   // return message and author created
   return {
     ok: true,
     status: 201,
     message: 'Author created with success!',
-    payload: createdAuthor,
+    payload: author,
   };
 };
 
@@ -124,13 +123,14 @@ const updateAuthorService = async (
 
 const deleteAuthorService = async (userId, userRole, authorId) => {
   // verify if author is self or admin
-  if (userId !== authorId && userRole !== 'ADMIN') {
-    // raise error if not permission
-    return { ok: false, status: 403, message: 'User not the Author!' };
+  console.log(userId, userRole, authorId);
+  if (userId === authorId || userRole === 'ADMIN') {
+    // find and delete author
+    await Author.query().deleteById(authorId);
+    return { ok: true, status: 204, message: 'Author deleted with success!' };
   }
-  // find and delete author
-  await Author.query().deleteById(authorId);
-  return { ok: true, status: 204, message: 'Author deleted with success!' };
+  // raise error if not permission
+  return { ok: false, status: 403, message: 'User not the Author!' };
 };
 
 module.exports = {

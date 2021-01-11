@@ -87,32 +87,35 @@ const retrieveArticleById = async (id) => {
   // verify id
   const validId = validateId(id);
   if (!validId.ok) return validId;
-  const Article = await Article.query()
-    .findById(id)
-    .select(
-      'aut.name',
-      'aut.picture',
-      'articles.category',
-      'articles.title',
-      'articles.summary',
-      'articles.first_paragraph'
-    )
-    .innerJoin('authors as aut', 'articles.author_id', 'aut.id');
+  try {
+    const Article = await Article.query()
+      .findById(id)
+      .innerJoin('authors as aut', 'articles.author_id', 'aut.id')
+      .select(
+        'aut.name',
+        'aut.picture',
+        'articles.category',
+        'articles.title',
+        'articles.summary',
+        'articles.first_paragraph'
+      );
 
-  if (Article) {
+    if (Article) {
+      return {
+        ok: true,
+        status: 200,
+        message: 'Article found!',
+        payload: Article,
+      };
+    }
+  } catch (err) {
     return {
-      ok: true,
-      status: 200,
-      message: 'Article found!',
+      ok: false,
+      status: 404,
+      message: 'No article found with this id!',
       payload: Article,
     };
   }
-  return {
-    ok: false,
-    status: 404,
-    message: 'No article found with this id!',
-    payload: Article,
-  };
 };
 
 const retriveSimpleArticles = async (category) => {
@@ -155,23 +158,31 @@ const retriveSimpleArticles = async (category) => {
 };
 
 const retriveSimpleArticlesById = async (id) => {
-  const articles = await Article.query()
-    .select(
-      'aut.name',
-      'aut.picture',
-      'articles.category',
-      'articles.title',
-      'articles.summary',
-      'articles.first_paragraph'
-    )
-    .innerJoin('authors as aut', 'articles.author_id', 'aut.id')
-    .where('articles.id', id);
-  return {
-    ok: true,
-    status: 200,
-    message: 'Articles found!',
-    payload: articles,
-  };
+  try {
+    const articles = await Article.query()
+      .select(
+        'aut.name',
+        'aut.picture',
+        'articles.category',
+        'articles.title',
+        'articles.summary',
+        'articles.first_paragraph'
+      )
+      .innerJoin('authors as aut', 'articles.author_id', 'aut.id')
+      .where('articles.id', id);
+    return {
+      ok: true,
+      status: 200,
+      message: 'Article found!',
+      payload: articles,
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      status: 404,
+      message: 'Article not found!',
+    };
+  }
 };
 
 const updateArticleService = async (
@@ -231,15 +242,15 @@ const updateArticleService = async (
 
 const deleteArticleService = async (userId, userRole, articleId) => {
   // verify if Article owner is the user or the user is admin
-  const { author_id } = Article.query().findById(articleId);
-  if (author_id !== userId && userRole !== 'ADMIN') {
-    // raise error if not permission
-    return { ok: false, status: 403, message: 'User not the Author!' };
+  const { author_id } = await Article.query().findById(articleId);
+  if (author_id === userId || userRole === 'ADMIN') {
+    // find and delete Article
+    await Article.query().deleteById(articleId);
+    // return 204
+    return { ok: true, status: 204, message: 'Author deleted with success!' };
   }
-  // find and delete Article
-  await Article.query().deleteById(articleId);
-  // return 204
-  return { ok: true, status: 204, message: 'Author deleted with success!' };
+  // raise error if not permission
+  return { ok: false, status: 403, message: 'User not the Author!' };
 };
 
 module.exports = {

@@ -6,7 +6,6 @@ const { LOCAL_URL } = process.env;
 const knexInstance = require('../knex');
 
 describe('Read authors tests', () => {
-  // TODO: need to implement a coorect token to test correctly
   beforeEach(async () => {
     return knexInstance.migrate
       .rollback()
@@ -14,7 +13,13 @@ describe('Read authors tests', () => {
       .then(async () => knexInstance.seed.run());
   });
 
-  afterAll(async () => knexInstance.destroy());
+  afterAll(async () => {
+    return knexInstance.migrate
+      .rollback()
+      .then(async () => knexInstance.migrate.latest())
+      .then(async () => knexInstance.seed.run())
+      .then(async () => knexInstance.destroy());
+  });
 
   const testArr = [
     {

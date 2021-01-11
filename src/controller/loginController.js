@@ -3,7 +3,7 @@ const { startSession } = require('../service/sessionService');
 
 const loginRoute = Router({ mergeParams: true });
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
   const { ok, status, message, payload } = await startSession(email, password);
   return ok

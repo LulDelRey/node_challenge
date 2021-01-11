@@ -8,7 +8,6 @@ const generateToken = (data) => {
     expiresIn: '1h',
     algorithm: 'HS256',
   };
-  console.log(data, SECRET, JWTCONFIG);
   const token = jwt.sign(data, SECRET, JWTCONFIG);
   return token;
 };
@@ -19,20 +18,20 @@ const startSession = async (email, password) => {
   if (!validEmail.ok) return validEmail;
   if (!validPassword.ok) return validPassword;
   const user = await Author.query().where('email', email);
-  if (user && user) {
+  if (user[0] && user[0].password === password) {
     const { password, ...userData } = user[0];
     const token = generateToken(userData);
     return {
       ok: true,
       status: 200,
       message: 'User athenticated with success!',
-      token,
+      payload: token,
     };
   }
   return {
     ok: false,
     status: 409,
-    message: "User doesn't exists with this informarion!",
+    message: "User doesn't exists with this information!",
   };
 };
 

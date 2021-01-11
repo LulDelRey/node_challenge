@@ -7,7 +7,6 @@ const knexInstance = require('../knex');
 console.log(process.env.NODE_ENV);
 
 describe('Create authors tests', () => {
-  // TODO: need to implement a coorect token to test correctly
   beforeEach(async () => {
     return knexInstance.migrate
       .rollback()
@@ -15,7 +14,13 @@ describe('Create authors tests', () => {
       .then(async () => knexInstance.seed.run());
   });
 
-  afterAll(async () => knexInstance.destroy());
+  afterAll(async () => {
+    return knexInstance.migrate
+      .rollback()
+      .then(async () => knexInstance.migrate.latest())
+      .then(async () => knexInstance.seed.run())
+      .then(async () => knexInstance.destroy());
+  });
 
   it('Can create an author with success', async () => {
     // let token;

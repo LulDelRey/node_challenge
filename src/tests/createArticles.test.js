@@ -13,7 +13,13 @@ describe('Create articles tests', () => {
       .then(async () => knexInstance.seed.run());
   });
 
-  afterAll(async () => knexInstance.destroy());
+  afterAll(async () => {
+    return knexInstance.migrate
+      .rollback()
+      .then(async () => knexInstance.migrate.latest())
+      .then(async () => knexInstance.seed.run())
+      .then(async () => knexInstance.destroy());
+  });
 
   it('Can create an article with success', async () => {});
 
