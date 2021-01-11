@@ -1,15 +1,20 @@
 # Articles API:
-  Article provider api, using rest architecture, managing authentication with a sql database.
-  The api has a crud for article's authors and for articles.
 
-## Pre requisites:
-  - [npm](https://www.npmjs.com/)
-  - [nodeJs](https://nodejs.org/en/)
-  #### SQL database:
-  - [mysql](https://www.mysql.com/)
-  - [postgresql](https://www.postgresql.org/)
+Article provider api, using rest architecture, managing authentication with a sql database.
+The api has a crud for article's authors and for articles.
+
+## Pre-requisites:
+
+- [npm](https://www.npmjs.com/)
+- [nodeJs](https://nodejs.org/en/)
+
+#### SQL database:
+
+- [mysql](https://www.mysql.com/)
+- [postgresql](https://www.postgresql.org/)
 
 ## Project structure:
+
 <details>
     <summary>See structure</summary>
 
@@ -54,21 +59,25 @@
 
 </details>
 
-## TEchnologies used:
-  - [nodeJs](https://nodejs.org/en/)
-  - [expressJs](https://expressjs.com/)
-  - [jest](https://jestjs.io/)
-  - [frisby](https://www.npmjs.com/package/frisby)
-  - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
-  - [dotenv](https://www.npmjs.com/package/dotenv)
-  - [knex](http://knexjs.org/)
-  - [objection](https://vincit.github.io/objection.js/)
-  - [mysql](https://www.mysql.com/)
-  - [pg](https://www.postgresql.org/)
+## Technologies used:
+
+- [nodeJs](https://nodejs.org/en/)
+- [expressJs](https://expressjs.com/)
+- [jest](https://jestjs.io/)
+- [frisby](https://www.npmjs.com/package/frisby)
+- [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [knex](http://knexjs.org/)
+- [objection](https://vincit.github.io/objection.js/)
+- [mysql](https://www.mysql.com/)
+- [pg](https://www.postgresql.org/)
 
 ## Running:
+
 ### Linux
+
 #### clone the repository and install dependencies:
+
 ```console
 git clone https://github.com/LulDelRey/node_challenge.git
 or
@@ -78,12 +87,14 @@ npm install
 ```
 
 #### create the .env file:
+
 ```console
 cd src
 touch .env
 ```
-    
+
 #### pass the environment variables:
+
 ```
 PORT=
 SECRET=
@@ -98,6 +109,7 @@ LOCAL_URL=
 ```
 
 #### migrate and seed the database:
+
 ```console
 npx knex migrate:rollback
 npx knex migrate:latest
@@ -105,140 +117,170 @@ npx knex seed:run
 ```
 
 #### start with nodeJs:
+
 ```console
 npm start
 ```
 
 #### start with nodemon:
+
 ```console
 npm run debug
 ```
 
 #### test the application:
+
 ```console
 npm test
 ```
 
 #### see tests coverage:
+
 ```console
 npm run testCoverage
 ```
 
 ## Api endpoints:
-  - #### Login:
-    - Endpoint expects email and password on the request body
 
-    - Will return status, message and token
+- #### Login:
 
-      `POST url + /api/login`
+  - Endpoint expects email and password on the request body
 
-  - #### Sign Up:
-    - Endpoint expects name, email, password and picture on the request body
+  - Will return status, message and token
 
-    - Will return status, message and the object with the information passed
+    `POST url + /api/login`
 
-      `POST url + /api/sign-up`
+- #### Sign Up:
 
-  - #### Create authors:
-    - Need to be authenticate with an admin user
+  - Endpoint expects name, email, password and picture on the request body
 
-    - Enpoint expects name, email, password, picture and role on the request body
+  - Will return status, message and the object with the information passed
 
-    - Will return status, message and the object with the information passed
+    `POST url + /api/sign-up`
 
-      `POST url + /api/admin/authors`
+- #### Create authors:
 
-  - #### Read authors:
-    - Need to be authenticate with an admin user
+  - Need to be authenticate with an admin user
 
-    - Endpoint expects no parameter
+  - Enpoint expects name, email, password, picture and role on the request body
 
-    - Will return status, message and a list with all the authors on the database
+  - Will return status, message and the object with the information passed
 
-      `GET url + /api/admin/authors`
+    `POST url + /api/admin/authors`
 
-  - #### Read author:
-    - Need to be authenticate with admin user
+- #### Read authors:
 
-    - Endpoint expects author id on the request params
+  - Need to be authenticate with an admin user
 
-    - Will return that specific author if it exists
+  - Endpoint expects no parameter
 
-    - Otherwise will return 404
+  - Will return status, message and a list with all the authors on the database
 
-      `GET url + /api/admin/authors/:id`
+    `GET url + /api/admin/authors`
 
-  - #### Update authors:
-    - Need to be authenticate with an admin user
+- #### Read author:
 
-    - Endpoint expects author id on the request params and author new information on the request body
+  - Need to be authenticate with admin user
 
-    - Will return status, message and an author object with the new information if it was successfully
+  - Endpoint expects author id on the request params
 
-      `PUT url + /api/admin/authors/:id`
+  - Will return that specific author if it exists
 
-  - #### Delete authors:
-    Need to be authenticate with an admin user
+  - Otherwise will return 404
 
-    - Endpoint expects author id on the request params
+    `GET url + /api/admin/authors/:id`
 
-    - Will return status, message
+- #### Update authors:
 
-      `DELETE url + /api/admin/authors/:id`
+  - Need to be authenticate with an admin user
 
-  - #### Create articles:
-    - Need to be authenticate with an admin user
+  - Endpoint expects author id on the request params and author new information on the request body, all information has to be sent again in order to not update to empty values
 
-    - Endpoint expects author id from token, title, summary, first_paragraph, body and categories
+  - Will return status, message and an author object with the new information if it was successfully
 
-    - Will return status, message and the article
+    `PUT url + /api/admin/authors/:id`
 
-      `POST url + /api/admin/articles`
+- #### Delete authors:
 
-  - #### Read articles:
-    - Need to be authenticate with an admin user
+  Need to be authenticate with an admin user
 
-    - Endpoint expects the user to be authenticated
+  - Endpoint expects author id on the request params
 
-    - Wil return status, message and a list with all the articles
+  - Will return status, message
 
-      `GET url + /api/admin/articles`
+    `DELETE url + /api/admin/authors/:id`
 
-  - #### Read article:
-    - Need to be authenticate with an admin user
+- #### Create articles:
 
-    - Endpoint expects article id from the request params
+  - Need to be authenticate with an admin user
 
-    - Will return status, message and complete article if found
+  - Endpoint expects author id from token, title, summary, first_paragraph, body and categories
 
-      `GET url + /api/admin/articles/:id`
+  - Will return status, message and the article
 
-  - #### Update articles:
-    - Need to be authenticate with an admin user
+    `POST url + /api/admin/articles`
 
-    - Endpoint expects article id, author id from the token or admin, and the new information for the article
+- #### Read articles:
 
-    - Will return status, message and the new article
+  - Need to be authenticate with an admin user
 
-      `PUT url + /api/admin/articles/:id`
+  - Endpoint expects the user to be authenticated
 
-  - #### Delete articles:
-    - Need to be authenticate with an admin user
+  - Wil return status, message and a list with all the articles
 
-    - Endpoint expects article id from the request params, author id from the token or admin
+    `GET url + /api/admin/articles`
 
-    - Will return status, message
+- #### Read article:
 
-      `DELETE url + /api/admin/articles/:id`
+  - Need to be authenticate with an admin user
 
-  - #### Read specific article:
-    - Endpoint expects article id from the request params
+  - Endpoint expects article id from the request params
 
-    - Will return status, message and simple article if found
+  - Will return status, message and complete article if found
 
-      `GET url + /api/articles/:id`
+    `GET url + /api/admin/articles/:id`
 
-  - #### Query articles by category:
-    - Endpoint expects category from the request query, if specified will return all articles for that category, if not, will return all articles
+- #### Update articles:
 
-      `GET url + /api/articles?category=someCategory`
+  - Need to be authenticate with an admin user
+
+  - Endpoint expects article id, author id from the token or admin, and the new information for the article, all information has to be sent again in order to not update to empty values
+
+  - Will return status, message and the new article
+
+    `PUT url + /api/admin/articles/:id`
+
+- #### Delete articles:
+
+  - Need to be authenticate with an admin user
+
+  - Endpoint expects article id from the request params, author id from the token or admin
+
+  - Will return status, message
+
+    `DELETE url + /api/admin/articles/:id`
+
+- #### Read specific article:
+
+  - Endpoint expects article id from the request params
+
+  - Will return status, message and simple article if found
+
+    `GET url + /api/articles/:id`
+
+- #### Query articles by category:
+
+  - Endpoint expects category from the request query, if specified will return all articles for that category, if not, will return all articles
+
+    `GET url + /api/articles?category=someCategory`
+
+## Next steps:
+- #### Give examples of input and output on the documentation
+- #### Finish all tests
+- #### Add pagination for the articles
+- #### Apply cache controle
+- #### Implement typescript
+- #### Implement a more complete search
+- #### Implement a front end to consume the api
+
+## Challenges

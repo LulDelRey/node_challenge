@@ -7,8 +7,17 @@
       "node": true,
       "jest": true
   },
-  "extends": "airbnb-base",
-  "parserOptions": { "ecmaVersion": 11 },
+  "extends": [
+    "airbnb-base",
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "rules": {
     "no-console": "off",
     "no-alert": "off",
