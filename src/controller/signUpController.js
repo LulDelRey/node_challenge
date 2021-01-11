@@ -1,14 +1,21 @@
 const { Router } = require('express');
-const auth = require('../middlewares/auth');
+const { createAuthorService } = require('../service/authorsServices');
 
 const signUpRoute = Router({ mergeParams: true });
 
-const signUp = (req, res) => {
+const signUp = (req, res, next) => {
   const { name, email, password, picture } = req.body;
-  // const { status, message } = signUpFunc(name, email, password, picture, 'AUT');
-  return res.status(200).json({ name, email, password, picture });
+  const { ok, status, message, payload } = createAuthorService(
+    name,
+    email,
+    password,
+    picture
+  );
+  return ok
+    ? res.status(status).json({ message, payload })
+    : next({ status, message });
 };
 
-signUpRoute.route('/').post(auth(false), signUp);
+signUpRoute.route('/').post(signUp);
 
 module.exports = signUpRoute;

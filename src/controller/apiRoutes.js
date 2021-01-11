@@ -8,10 +8,10 @@ const searchRoute = require('./searchController');
 
 const apiRoute = Router({ mergeParams: true });
 
-apiRoute.use('/login', auth(), loginRoute);
-apiRoute.use('/sign-up', auth(), signUpRoute);
-apiRoute.use('/admin/authors', auth(), authorsRoute);
+apiRoute.use('/login', auth(false), loginRoute);
+apiRoute.use('/sign-up', auth(false), signUpRoute);
+apiRoute.use('/admin/authors', auth(true), authorsRoute);
 apiRoute.use('/admin/articles', auth(true), articlesRoute);
-apiRoute.use('/articles', auth(), searchRoute);
+apiRoute.use('/articles', auth(false), searchRoute);
 
 module.exports = apiRoute;

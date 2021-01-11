@@ -66,13 +66,12 @@ const deleteAuthor = async (req, res, next) => {
   return ok ? res.status(status).json({ message }) : next({ status, message });
 };
 
+authorsRoute.route('/').get(getAuthors).post(createAuthor);
+
 authorsRoute
-  .route('/')
-  .get(getAuthors)
-  .post(createAuthor)
+  .route('/:id')
+  .get(getAuthorById)
   .put(updateAuthor)
   .delete(deleteAuthor);
-
-authorsRoute.route('/:id').get(getAuthorById);
 
 module.exports = authorsRoute;

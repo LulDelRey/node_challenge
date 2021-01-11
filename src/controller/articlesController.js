@@ -41,7 +41,14 @@ const getArticleById = async (req, res, next) => {
 const updateArticle = async (req, res, next) => {
   const { id: authorId, role: userRole } = req.user;
   const { id: articleId } = req.params;
-  const { title, authorIdArt, summary, first_paragraph, body, category } = req.body;
+  const {
+    title,
+    authorIdArt,
+    summary,
+    first_paragraph,
+    body,
+    category,
+  } = req.body;
   const { ok, status, message, payload } = await updateArticleService(
     authorId,
     userRole,
@@ -66,18 +73,15 @@ const deleteArticle = async (req, res, next) => {
     userRole,
     articleId
   );
-  return ok
-    ? res.status(status).json({ message })
-    : next({ status, message });
+  return ok ? res.status(status).json({ message }) : next({ status, message });
 };
 
+articlesRoute.route('/').get(getArticles).post(createArticle);
+
 articlesRoute
-  .route('/')
-  .get(getArticles)
-  .post(createArticle)
+  .route('/:id')
+  .get(getArticleById)
   .put(updateArticle)
   .delete(deleteArticle);
-
-articlesRoute.route('/:id').get(getArticleById);
 
 module.exports = articlesRoute;

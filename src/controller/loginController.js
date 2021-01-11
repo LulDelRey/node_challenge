@@ -1,13 +1,16 @@
 const { Router } = require('express');
-const auth = require('../middlewares/auth');
+const { startSession } = require('../service/sessionService');
 
 const loginRoute = Router({ mergeParams: true });
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  return res.status(200).json({ email, password })
+  const { ok, status, message, payload } = await startSession(email, password);
+  return ok
+    ? res.status(status).json({ message, payload })
+    : next({ status, message });
 };
 
-loginRoute.route('/').post(auth(false), login);
+loginRoute.route('/').post(login);
 
 module.exports = loginRoute;

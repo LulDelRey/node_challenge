@@ -21,6 +21,7 @@ const createAuthorService = async (
   const validName = validateName(name);
   const validEmail = validateEmail(email);
   const validPass = validatePassword(password);
+  const user = await Author.query().where('email', email);
   // raise error message on wrong information
   switch (false) {
     case validName.ok:
@@ -29,6 +30,12 @@ const createAuthorService = async (
       return validName;
     case validPass.ok:
       return validName;
+    case user:
+      return {
+        ok: false,
+        status: 409,
+        message: 'User already exists with this info!',
+      };
     default:
       break;
   }
